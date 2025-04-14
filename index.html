@@ -1,50 +1,150 @@
-<html>
-  <head>
-    <script
-      type="text/javascript"
-      src="https://www.gstatic.com/charts/loader.js"
-    ></script>
-    <script type="text/javascript">
-      google.charts.load("current", { packages: ["corechart"] })
-      google.charts.setOnLoadCallback(drawVisualization)
+<!DOCTYPE html>
 
-      function drawVisualization() {
-        // Some raw data (not necessarily accurate)
-        var data = google.visualization.arrayToDataTable([
-          [
-            "Month",
-            "Nuevo León",
-            "Coahuila",
-            "Colima",
-            "CDMX",
-            "Jalisco",
-            "Edo Mex",
-          ],
-          ["2008", 21, 33, 27, 28, 37, 44],
-          ["2010", 23, 28, 35, 29, 37, 43],
-          ["2012", 20, 28, 34, 29, 40, 45],
-          ["2014", 14, 30, 34, 28, 35, 50],
-          ["2016", 15, 25, 34, 28, 32, 48],
-          ["2018", 15, 23, 31, 31, 28, 43],
-        ])
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Indicadores de Pobreza en México (2008-2018)</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar', 'line']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-        var options = {
-          title:
-            "Porcentaje de población en situación de pobreza, según entidad federativa, 2008-2018",
-          vAxis: { title: "Estados del Pais" },
-          hAxis: { title: "Años" },
-          seriesType: "bars",
-          series: { 5: { type: "point" } },
-        }
+    function drawCharts() {
+      // 1. Pobreza - Línea
+      var pobrezaData = google.visualization.arrayToDataTable([
+        ['Año', 'Pobreza (%)'],
+        ['2008', 44.4],
+        ['2010', 46.1],
+        ['2012', 45.5],
+        ['2014', 46.2],
+        ['2016', 43.6],
+        ['2018', 41.9]
+      ]);
 
-        var chart = new google.visualization.ComboChart(
-          document.getElementById("chart_div"),
-        )
-        chart.draw(data, options)
-      }
-    </script>
-  </head>
-  <body>
-    <div id="chart_div" style="width: 900px; height: 500px"></div>
-  </body>
+      var pobrezaOptions = {
+        title: 'Población en Situación de Pobreza (%)',
+        colors: ['#007acc'],
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      new google.visualization.LineChart(document.getElementById('pobreza_chart'))
+        .draw(pobrezaData, pobrezaOptions);
+
+      // 2. Pobreza extrema - Columnas
+      var extremaData = google.visualization.arrayToDataTable([
+        ['Año', 'Pobreza Extrema (%)'],
+        ['2008', 11.0],
+        ['2010', 11.3],
+        ['2012', 9.8],
+        ['2014', 9.5],
+        ['2016', 7.6],
+        ['2018', 7.4]
+      ]);
+
+      var extremaOptions = {
+        title: 'Pobreza Extrema (%)',
+        colors: ['#cc0000'],
+        legend: { position: 'none' },
+        hAxis: { title: 'Año' },
+        vAxis: { title: '%' }
+      };
+
+      new google.visualization.ColumnChart(document.getElementById('extrema_chart'))
+        .draw(extremaData, extremaOptions);
+
+      // 3. Carencia por salud - Área
+      var saludData = google.visualization.arrayToDataTable([
+        ['Año', 'Salud (%)'],
+        ['2008', 38.4],
+        ['2010', 29.2],
+        ['2012', 21.5],
+        ['2014', 18.2],
+        ['2016', 15.5],
+        ['2018', 16.2]
+      ]);
+
+      var saludOptions = {
+        title: 'Carencia por Servicios de Salud (%)',
+        colors: ['#28a745'],
+        areaOpacity: 0.4,
+        legend: { position: 'bottom' }
+      };
+
+      new google.visualization.AreaChart(document.getElementById('salud_chart'))
+        .draw(saludData, saludOptions);
+
+      // 4. Seguridad social - Barras
+      var seguridadData = google.visualization.arrayToDataTable([
+        ['Año', 'Seguridad Social (%)'],
+        ['2008', 65.0],
+        ['2010', 60.7],
+        ['2012', 61.2],
+        ['2014', 58.5],
+        ['2016', 55.8],
+        ['2018', 57.3]
+      ]);
+
+      var seguridadOptions = {
+        title: 'Carencia por Seguridad Social (%)',
+        colors: ['#ff9900'],
+        legend: { position: 'none' },
+        hAxis: { title: '%' },
+        vAxis: { title: 'Año' }
+      };
+
+      new google.charts.Bar(document.getElementById('seguridad_chart'))
+        .draw(seguridadData, google.charts.Bar.convertOptions(seguridadOptions));
+
+      // 5. Alimentación - Pastel
+      var alimentacionData = google.visualization.arrayToDataTable([
+        ['Año', 'Carencia Alimentaria'],
+        ['2008', 21.7],
+        ['2010', 24.8],
+        ['2012', 23.3],
+        ['2014', 23.4],
+        ['2016', 20.1],
+        ['2018', 20.4]
+      ]);
+
+      var alimentacionOptions = {
+        title: 'Distribución de Carencia por Alimentación (%)',
+        colors: ['#6f42c1', '#007bff', '#20c997', '#fd7e14', '#e83e8c', '#17a2b8']
+      };
+
+      new google.visualization.PieChart(document.getElementById('alimentacion_chart'))
+        .draw(alimentacionData, alimentacionOptions);
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 50px;
+    }
+
+    .chart {
+      margin-bottom: 60px;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Indicadores de Pobreza en México (2008-2018)</h1>
+
+  <div id="pobreza_chart" class="chart" style="width: 100%; height: 400px;"></div>
+  <div id="extrema_chart" class="chart" style="width: 100%; height: 400px;"></div>
+  <div id="salud_chart" class="chart" style="width: 100%; height: 400px;"></div>
+  <div id="seguridad_chart" class="chart" style="width: 100%; height: 400px;"></div>
+  <div id="alimentacion_chart" class="chart" style="width: 100%; height: 400px;"></div>
+
+</body>
 </html>
