@@ -1,1 +1,50 @@
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] })
+      google.charts.setOnLoadCallback(drawVisualization)
 
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          [
+            "Month",
+            "Nuevo León",
+            "Coahuila",
+            "Colima",
+            "CDMX",
+            "Jalisco",
+            "Edo Mex",
+          ],
+          ["2008", 21, 33, 27, 28, 37, 44],
+          ["2010", 23, 28, 35, 29, 37, 43],
+          ["2012", 20, 28, 34, 29, 40, 45],
+          ["2014", 14, 30, 34, 28, 35, 50],
+          ["2016", 15, 25, 34, 28, 32, 48],
+          ["2018", 15, 23, 31, 31, 28, 43],
+        ])
+
+        var options = {
+          title:
+            "Porcentaje de población en situación de pobreza, según entidad federativa, 2008-2018",
+          vAxis: { title: "Estados del Pais" },
+          hAxis: { title: "Años" },
+          seriesType: "bars",
+          series: { 5: { type: "point" } },
+        }
+
+        var chart = new google.visualization.ComboChart(
+          document.getElementById("chart_div"),
+        )
+        chart.draw(data, options)
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 900px; height: 500px"></div>
+  </body>
+</html>
